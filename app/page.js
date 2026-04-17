@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { supabase } from '../lib/supabaseClient'
+import { supabase } from '@/lib/supabaseClient'
 
 export default function Home() {
   const [properties, setProperties] = useState([])
@@ -41,8 +41,13 @@ export default function Home() {
           <p>{p.price} €</p>
           <p>{p.location}</p>
           <p>{p.status}</p>
+
           {p.image && (
-            <img src={p.image} width="300" />
+            <img
+              src={p.image}
+              width="300"
+              alt={p.title}
+            />
           )}
         </div>
       ))}
