@@ -8,15 +8,18 @@ import { supabase } from '@/lib/supabaseClient'
 export default function Home() {
   const [properties, setProperties] = useState([])
 
-  const fetchProperties = async (status) => {
+  const fetchProperties = async (type) => {
     let query = supabase.from('properties').select('*')
 
-    if (status) {
-      query = query.eq('status', status)
+    if (type) {
+      query = query.eq('type', type)
     }
 
-    const { data } = await query
-    setProperties(data || [])
+    const { data, error } = await query
+
+    if (!error) {
+      setProperties(data || [])
+    }
   }
 
   useEffect(() => {
