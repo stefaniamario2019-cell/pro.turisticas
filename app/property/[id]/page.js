@@ -1,37 +1,42 @@
-import { createClient } from '@/lib/supabaseServer'
+'use client'
 
-export default async function PropertyDetail({ params }) {
-  const supabase = createClient()
+import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabaseClient'
 
-  const { data: property } = await supabase
-    .from('properties')
-    .select('*')
-    .eq('id', params.id)
-    .single()
+export default function PropertyPage({ params }) {
+  const [property, setProperty] = useState(null)
 
-  if (!property) return <div>Propiedad no encontrada</div>
+  useEffect(() => {
+    const fetchProperty = async () => {
+      const { data, error } = await supabase
+        .from('properties')
+        .select('*')
+        .eq('id', params.id)
+        .single()
+
+      if (!error) {
+        setProperty(data)
+      } else {
+        console.log(error.message)
+      }
+    }
+
+    fetchProperty()
+  }, [params.id])
+
+  if (!property) return <h1>Cargando...</h1>
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div style={{ padding: 20 }}>
+      <h1>{property.title}</h1>
+      <p>{property.price} €</p>
+      <p>{property.location}</p>
+      <p>{property.description}</p>
+      <p>{property.status}</p>
 
-      <img
-        src={property.image || '/placeholder.jpg'}
-        className="w-full h-[400px] object-cover rounded-xl"
-      />
-
-      <div className="mt-6">
-        <h1 className="text-3xl font-bold">{property.title}</h1>
-        <p className="text-gray-500">{property.location}</p>
-
-        <p className="text-2xl font-bold mt-4">
-          €{property.price}
-        </p>
-
-        <p className="mt-6 text-gray-700">
-          {property.description}
-        </p>
-      </div>
-
+      {property.image && (
+        <img src={property.image} width="400" />
+      )}
     </div>
   )
 }
