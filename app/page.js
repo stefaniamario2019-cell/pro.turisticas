@@ -7,33 +7,25 @@ import { supabase } from '@/lib/supabaseClient'
 
 export default function Home() {
   const [properties, setProperties] = useState([])
-  const [estado, setEstado] = useState('Venta')
 
-  const fetchProperties = async (estadoFiltro) => {
+  const fetchProperties = async (status) => {
     let query = supabase.from('properties').select('*')
 
-    if (estadoFiltro) {
-      query = query.eq('status', estadoFiltro.toLowerCase())
+    if (status) {
+      query = query.eq('status', status)
     }
 
-    const { data, error } = await query
-
-    if (!error) setProperties(data)
+    const { data } = await query
+    setProperties(data || [])
   }
 
   useEffect(() => {
-    fetchProperties(estado)
+    fetchProperties('sale')
   }, [])
 
   return (
     <>
-      <HeroSearch
-        onSearch={(estadoSeleccionado) => {
-          setEstado(estadoSeleccionado)
-          fetchProperties(estadoSeleccionado)
-        }}
-      />
-
+      <HeroSearch onSearch={fetchProperties} />
       <PropertiesGrid properties={properties} />
     </>
   )
