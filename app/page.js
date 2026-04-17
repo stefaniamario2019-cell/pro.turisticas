@@ -14,9 +14,9 @@ export default function Home() {
         .select('*')
 
       if (error) {
-        console.log('ERROR SUPABASE:', error)
+        console.log('SUPABASE ERROR:', error.message)
       } else {
-        setProperties(data)
+        setProperties(data || [])
       }
 
       setLoading(false)
@@ -31,11 +31,11 @@ export default function Home() {
     <div style={{ padding: 20 }}>
       <h1>PROPIEDADES</h1>
 
-      {properties?.length === 0 && (
+      {properties.length === 0 && (
         <p>No hay propiedades en Supabase</p>
       )}
 
-      {properties?.map((p) => (
+      {properties.map((p) => (
         <div key={p.id} style={{ marginBottom: 20 }}>
           <h2>{p.title}</h2>
           <p>{p.price} €</p>
