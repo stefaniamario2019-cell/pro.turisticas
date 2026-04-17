@@ -3,31 +3,42 @@
 import { useState } from 'react'
 
 export default function HeroSearch({ onSearch }) {
-  const [estado, setEstado] = useState('Venta')
+  const [estado, setEstado] = useState('sale')
 
   return (
-    <div className="h-[400px] bg-gray-900 text-white flex flex-col justify-center items-center">
-      <h1 className="text-4xl font-bold mb-6">
-        Encuentra tu propiedad ideal
-      </h1>
+    <div className="relative h-[500px] flex items-center justify-center text-white">
+      
+      <img
+        src="/hero.jpg"
+        className="absolute w-full h-full object-cover"
+      />
 
-      <div className="bg-white text-black p-4 rounded-xl flex gap-4">
-        <select
-          value={estado}
-          onChange={(e) => setEstado(e.target.value)}
-          className="border p-2"
-        >
-          <option>Venta</option>
-          <option>Alquiler</option>
-        </select>
+      <div className="absolute inset-0 bg-black/50" />
 
-        <button
-          onClick={() => onSearch(estado)}
-          className="bg-black text-white px-4 py-2"
-        >
-          Buscar
-        </button>
+      <div className="relative z-10 text-center">
+        <h1 className="text-5xl font-bold mb-6">
+          Encuentra tu hogar ideal
+        </h1>
+
+        <div className="bg-white text-black rounded-xl p-4 flex gap-3 shadow-xl">
+          <select
+            value={estado}
+            onChange={(e) => setEstado(e.target.value)}
+            className="p-2 border rounded"
+          >
+            <option value="sale">Venta</option>
+            <option value="rent">Alquiler</option>
+          </select>
+
+          <button
+            onClick={() => onSearch(estado)}
+            className="bg-black text-white px-6 rounded"
+          >
+            Buscar
+          </button>
+        </div>
       </div>
     </div>
   )
 }
+      
